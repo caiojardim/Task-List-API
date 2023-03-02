@@ -1,19 +1,18 @@
-class Database {
-  #database = {
-    tasks: [
-      {
-        id: 1,
-        title: 'Code Aplication',
-        description: 'Code a Backend task aplication',
-        completed_at: null,
-        created_at: new Date.now(),
-        updated_at: new Date.now()
-      }
-    ]
+export class Database {
+  #database = {}
+
+  select(table) {
+    const data = this.#database[table]
+    return data
   }
 
-  select() {
-    return tasks
+  insert(table, data) {
+    if(Array.isArray(this.#database[table])) {
+      this.#database[table].push(data)
+    } else {
+      this.#database[table] = [data]
+    }
+    return data
   }
   
 }
