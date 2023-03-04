@@ -17,16 +17,23 @@ export const routes = [
     method: 'POST',
     path: buildRoutePath('/tasks'),
     handler: (req, res) => {
-      const task = {
-        id: randomUUID(),
-        title: req.body.title,
-        description: req.body.description,
-        completed_at: null,
-        created_at: Date.now(),
-        updated_at: Date.now()
+      const { title, description } = req.body
+      if (title && description) {
+        const task = {
+          id: randomUUID(),
+          title: title,
+          description: description,
+          completed_at: null,
+          created_at: Date.now(),
+          updated_at: Date.now()
+        }
+        database.insert('tasks', task)
+        return res.writeHead(201).end()
+      } else {
+        return res.writeHead(400).end(
+          JSON.stringify({message: 'title and description are required'})
+        )
       }
-      database.insert('tasks', task)
-      return res.writeHead(201).end()
     } 
   },{
     method: 'PUT',
@@ -34,14 +41,20 @@ export const routes = [
     handler: (req, res) => {
       const { id } = req.params
       const { title, description } = req.body
-      
-      database.update('tasks', id, {
-        title,
-        description,
-        updated_at: Date.now()
-      })
 
-      return res.writeHead(201).end()
+      if (title && description) {
+        database.update('tasks', id, {
+          title,
+          description,
+          updated_at: Date.now()
+        })
+
+        return res.writeHead(201).end()
+      } else {
+        return res.writeHead(400).end(
+          JSON.stringify({message: 'title and description are required'})
+        )
+      }
     } 
   },
   {
