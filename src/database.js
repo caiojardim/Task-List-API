@@ -19,6 +19,7 @@ export class Database {
 
   select(table) {
     const data = this.#database[table]
+    console.log(this.#database)
     return data
   }
 
@@ -28,9 +29,9 @@ export class Database {
     } else {
       this.#database[table] = [data]
     }
+    console.log(this.#database)
     
     this.#persist()
-    return data
   }
 
   update(table, id, data) {
@@ -40,12 +41,19 @@ export class Database {
         newTask.title = data.title
         newTask.description = data.description
         newTask.updated_at = data.updated_at
-
         return newTask
-      }
+      }  
       return task
     })
+    this.#persist()
   }
-  
+
+  delete(table, id) {
+    const tableWithoutDeletedOne = this.#database[table].filter(task => {
+      return task.id !== id
+    })
+    this.#database[table] = tableWithoutDeletedOne
+    this.#persist()
+  }
 }
 
