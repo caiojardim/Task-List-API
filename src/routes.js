@@ -42,6 +42,12 @@ export const routes = [
       const { id } = req.params
       const { title, description } = req.body
 
+      if(!database.isValidID('tasks', id)) {
+        return res.writeHead(400).end(
+          JSON.stringify({message: 'ID invalid'})
+        )
+      }
+
       if (title && description) {
         database.update('tasks', id, {
           title,
@@ -62,10 +68,16 @@ export const routes = [
     path: buildRoutePath('/tasks/:id'),
     handler: (req, res) => {
       const { id } = req.params
+
+      if(!database.isValidID('tasks', id)) {
+        return res.writeHead(400).end(
+          JSON.stringify({message: 'ID invalid'})
+        )
+      }
       
       database.delete('tasks', id)
 
-      return res.writeHead(201).end()
+      return res.writeHead(200).end()
     }, 
   },
   {
@@ -73,12 +85,18 @@ export const routes = [
     path: buildRoutePath('/tasks/:id'),
     handler: (req, res) => {
       const { id } = req.params
+
+      if(!database.isValidID('tasks', id)) {
+        return res.writeHead(400).end(
+          JSON.stringify({message: 'ID invalid'})
+        )
+      }
       
       database.toggleCompletedAt('tasks', id, {
         completed_at: Date.now()
       })
 
-      return res.writeHead(201).end()
+      return res.writeHead(200).end()
     }, 
   },
 ]
