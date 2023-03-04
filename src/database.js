@@ -32,6 +32,20 @@ export class Database {
     this.#persist()
     return data
   }
+
+  update(table, id, data) {
+    this.#database[table].map(task => {
+      if (task.id === id) {
+        let newTask = task
+        newTask.title = data.title
+        newTask.description = data.description
+        newTask.updated_at = data.updated_at
+
+        return newTask
+      }
+      return task
+    })
+  }
   
 }
 
