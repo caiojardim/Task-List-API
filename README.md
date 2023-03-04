@@ -1,6 +1,6 @@
 # A Task List API
 
-Create to learn node basics concepts, with node the natives APIs (http, fetch, fs...)
+Create to learn Node basics concepts, with the natives APIs (http, fetch, fs...)
 
 What I Learned:
 
