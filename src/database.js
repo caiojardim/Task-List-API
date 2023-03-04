@@ -19,7 +19,6 @@ export class Database {
 
   select(table) {
     const data = this.#database[table]
-    console.log(this.#database)
     return data
   }
 
@@ -29,7 +28,6 @@ export class Database {
     } else {
       this.#database[table] = [data]
     }
-    console.log(this.#database)
     
     this.#persist()
   }
@@ -53,6 +51,14 @@ export class Database {
       return task.id !== id
     })
     this.#database[table] = tableWithoutDeletedOne
+    this.#persist()
+  }
+
+  toggleCompletedAt(table, id, data) {
+    const rowIndex = this.#database[table].findIndex(row => row.id === id)
+    const rowCompletedAt = this.#database[table][rowIndex].completed_at
+    const CompletedAtData = rowCompletedAt === null ? data.completed_at : null
+    this.#database[table][rowIndex].completed_at = CompletedAtData
     this.#persist()
   }
 }
